@@ -1,0 +1,132 @@
+#:kivy 1.10.1
+#:import Path pathlib.Path
+
+<SuccessDialogLayout>:
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Succeed."
+        Button:
+            text: "Close"
+            on_release: root.close()
+            size_hint_y: None
+            height: self.texture_size[1] * 1.5
+
+<ErrorDialogLayout>:
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Error."
+        Button:
+            text: "Close"
+            on_release: root.close()
+            size_hint_y: None
+            height: self.texture_size[1] * 1.5
+
+<SaveAsFileChooser>:
+    BoxLayout:
+        orientation: "vertical"
+        TextInput:
+            id: current_path
+            text: file_chooser.path
+            readonly: True
+            multiline: False
+            size_hint_y: None
+            height: self.minimum_height
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: self.minimum_height
+            Button:
+                text: "Icon View"
+                on_release: file_chooser.view_mode = "icon"
+                size_hint_y: None
+                height: self.texture_size[1] * 1.5
+            Button:
+                text: "List View"
+                on_release: file_chooser.view_mode = "list"
+                size_hint_y: None
+                height: self.texture_size[1] * 1.5
+        FileChooser:
+            id: file_chooser
+            path: str(Path().home())
+            FileChooserIconLayout
+            FileChooserListLayout
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: self.minimum_height
+            TextInput:
+                id: file_name_input
+                hint_text: "file_name"
+                multiline: False
+                size_hint_y: None
+                height: self.minimum_height
+            Button:
+                text: "Save As"
+                size_hint_y: None
+                height: file_name_input.height
+                size_hint_x: 0.2
+                on_release:
+                    root.save(file_chooser.path, file_name_input.text, close_after_success=True)
+            Button:
+                text: "X"
+                on_release: root.close()
+                size_hint_y: None
+                height: file_name_input.height
+                size_hint_x: 0.1
+
+<OpenFileChooser>:
+    BoxLayout:
+        orientation: "vertical"
+        TextInput:
+            id: current_path
+            text: file_chooser.path
+            readonly: True
+            multiline: False
+            size_hint_y: None
+            height: self.minimum_height
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: self.minimum_height
+            Button:
+                text: "Icon View"
+                on_release: file_chooser.view_mode = "icon"
+                size_hint_y: None
+                height: self.texture_size[1] * 1.5
+            Button:
+                text: "List View"
+                on_release: file_chooser.view_mode = "list"
+                size_hint_y: None
+                height: self.texture_size[1] * 1.5
+        FileChooser:
+            id: file_chooser
+            path: str(Path().home())
+            FileChooserIconLayout
+            FileChooserListLayout
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: self.minimum_height
+            TextInput:
+                id: file_name_input
+                hint_text: "file_name"
+                text: str(file_chooser.selection)
+                multiline: False
+                readonly: True
+                size_hint_y: None
+                height: self.minimum_height
+            Button:
+                text: "Open"
+                size_hint_y: None
+                height: file_name_input.height
+                size_hint_x: 0.2
+                on_release:
+                    root.open(file_chooser.selection, close_after_success=True)
+            Button:
+                text: "X"
+                on_release: root.close()
+                size_hint_y: None
+                height: file_name_input.height
+                size_hint_x: 0.1

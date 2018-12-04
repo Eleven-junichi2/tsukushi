@@ -1,0 +1,393 @@
+#:kivy 1.10.1
+#:import Path pathlib.Path
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+<Popup>:
+    size_hint: 0.8, 0.8
+    title: "　"
+
+<TextInput>:
+    font_name: "code_input"
+    background_normal: "images/text_input.png"
+    background_active: "images/text_input_active.png"
+
+<Button>:
+    background_normal: "images/button.png"
+    background_down: "images/button_down.png"
+
+<ActionView>:
+    background_image: "images/action_view.png"
+
+<IconBase>:
+    Widget:
+        pos: self.parent.pos
+        size: self.parent.size
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                source: root.icon
+                pos: self.x + root.padding_left, self.y + root.padding_bottom
+                size:
+                    self.width - root.padding_right * 2, self.height - root.padding_top * 2
+<SaveFilePopupLayout>:
+    BoxLayout:
+        orientation: "vertical"
+        FileChooserListView:
+            id: file_chooser
+            path: str(Path().home())
+            show_hidden: True
+            on_submit: file_name_input.text = Path(self.selection[0]).parts[-1]
+        Label:
+            text: "Double click to select the file."
+            size_hint_y: None
+            height: self.texture_size[1] * 1.1
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: file_name_input.minimum_height
+            TextInput:
+                id: file_name_input
+                font_size: 12
+                hint_text: "file_name"
+            Button:
+                text: "Save File"
+                size_hint_x: 0.44
+                on_release:
+                    is_ok = False
+                    if file_name_input.text:\
+                    is_ok = root.save_file(str(Path(file_chooser.path) / file_name_input.text))
+                    if is_ok: root.close()
+            Button:
+                text: "Close"
+                size_hint_x: 0.22
+                on_release: root.close()
+
+<OpenFilePopupLayout>:
+    BoxLayout:
+        orientation: "vertical"
+        FileChooserListView:
+            id: file_chooser
+            path: str(Path().home())
+            show_hidden: True
+        Label:
+            text: "Click to select the file."
+            size_hint_y: None
+            height: self.texture_size[1] * 1.1
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: file_name_input.minimum_height
+            TextInput:
+                id: file_name_input
+                text: file_chooser.selection[0] if file_chooser.selection else ""
+                font_size: 12
+                hint_text: "file_name"
+            Button:
+                text: "Open File"
+                size_hint_x: 0.44
+                on_release:
+                    is_ok = False
+                    if file_chooser.selection:\
+                    is_ok = root.open_file(file_chooser.selection[0])
+                    if is_ok: root.close()
+            Button:
+                text: "Close"
+                size_hint_x: 0.22
+                on_release: root.close()
+
+<ProgressPopupLayout>:
+    progress_bar: progress_bar
+    BoxLayout:
+        orientation: "vertical"
+        ProgressBar:
+            id: progress_bar
+        Label:
+            text: "{}/{}".format(progress_bar.value, progress_bar.max)
+
+<DashBoardFileChooserView>:
+    file_chooser: file_chooser
+    file_name_input: file_name_input
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 4, 4
+            spacing: 4
+            size_hint_y: None
+            height: 40
+            IconButton:
+                id: add_dir_button
+                icon: "images/add_dir_icon.png"
+                padding: 5, 4 ,5, 4
+                size_hint_x: None
+                width: self.height
+                on_release:
+                    if root.add_dir(file_chooser.path, file_name_input.text):\
+                    file_chooser._update_files()
+            IconButton:
+                id: add_file_btn
+                icon: "images/add_file_icon.png"
+                padding: 5, 4 ,5, 4
+                size_hint_x: None
+                width: self.height
+                on_release:
+                    if root.add_file(file_chooser.path, file_name_input.text):\
+                    file_chooser._update_files()
+                # on_state: root.toggle_file_chooser_show()
+            TextInput:
+                id: file_name_input
+                size_hint_y: None
+                font_size: 12
+                height: self.minimum_height
+                hint_text: "file/dir name to add"
+                multiline: False
+        FileChooserListView:
+            id: file_chooser
+            path: str(Path().home())
+            show_hidden: True
+            # on_submit: root.open_file_and_showing_progress()
+            on_submit: root.file_chooser_user.open_file_with_progress(self.selection[0], True)
+        Label:
+            text: "Double click to open the file."
+            size_hint_y: None
+            height: self.texture_size[1] * 1.1
+
+<EditorScreen>:
+    row_num: row_num
+    col_num: col_num
+    # row_max_num: row_max_num
+    text_input_area: text_input_area
+    file_name_input: file_name_input
+    dashboard: dashboard
+    toggle_btn_file_chooser: toggle_btn_file_chooser
+    language_mode_chooser: language_mode_chooser
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#2E2E2E")
+        Rectangle:
+            pos: root.pos
+            size: root.size
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#5D5D5D")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            orientation: "horizontal"
+            size_hint_y: None
+            height: 40
+            padding: 4, 4
+            spacing: 4
+            IconWidget:
+                icon: app.icon
+                size_hint_x: None
+                width: self.height
+            Button:
+                text: "Open File"
+                size_hint_x: None
+                width: self.texture_size[0] * 1.2
+                on_release: root.show_open()
+            Button:
+                text: "Save File"
+                size_hint_x: None
+                width: self.texture_size[0] * 1.2
+                on_release: root.show_save()
+            Button:
+                text: "License"
+                size_hint_x: None
+                width: self.texture_size[0] * 1.2
+                on_release: root.show_license()
+        BoxLayout:
+            orientation: "horizontal"
+            StackLayout:
+                canvas.before:
+                    Color:
+                        rgba: get_color_from_hex("#464646")
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                orientation: "lr-tb"
+                size_hint_x: None
+                width: 40
+                padding: 4, 4
+                IconToggleButton:
+                    id: toggle_btn_file_chooser
+                    icon: "images/files_icon.png"
+                    padding: 6, 5 ,6, 5
+                    size_hint_y: None
+                    height: self.width
+                    on_state: root.toggle_file_chooser_show()
+            RelativeLayout:
+                id: dashboard
+                size_hint_x: None
+                width: 0
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 2
+                padding: 2
+                TextInput:
+                    id: file_name_input
+                    size_hint_y: None
+                    font_size: 12
+                    hint_text: "File name:"
+                    height: self.minimum_height
+                    multiline: False
+                CodeInput:
+                    id: text_input_area
+        BoxLayout:
+            orientation: "horizontal"
+            id: edit_info
+            size_hint_y: None
+            height: self.minimum_height
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 2
+                padding: 2, 2
+                Label:
+                    text: "row:"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                Label:
+                    id: row_num
+                    text: ""
+                    size_hint_y: None
+                    height: self.texture_size[1]
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 2
+                padding: 2, 2
+                Label:
+                    text: "col:"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                Label:
+                    id: col_num
+                    text: ""
+                    size_hint_y: None
+                    height: self.texture_size[1]
+            # BoxLayout:
+            #     orientation: "horizontal"
+            #     size_hint_y: None
+            #     height: self.minimum_height
+            #     spacing: 2
+            #     padding: 2, 2
+            #     Label:
+            #         text: "row_max_num:"
+            #         size_hint_y: None
+            #         height: self.texture_size[1]
+            #     Label:
+            #         id: row_max_num
+            #         text: str(text_input_area.height // text_input_area.line_height)
+            #         size_hint_y: None
+            #         height: self.texture_size[1]
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 2
+                padding: 2, 2
+                Label:
+                    text: "syntax:"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                Spinner:
+                    id: language_mode_chooser
+                    text: tuple(root.lexer_dict.keys())[0]
+                    values: root.lexer_dict.keys()
+
+<LicensePopupLayout>:
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "(C) 2018 Eleven-junichi2"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "https://eleven-junichi2.github.io/"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "This app's repository"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "https://github.com/Eleven-junichi2/makodedit"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        Label:
+            text: "The copyright of the following libraries belongs to their respective rights holders:"
+            text_size_width: self.texture_size[0]
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Kivy"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "https://github.com/kivy/kivy/blob/master/LICENSE"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Noto"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Pygments"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "SDL"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "https://www.libsdl.org/license.php"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "GLEW"
+            TextInput:
+                multiline: False
+                readonly: True
+                text: "http://glew.sourceforge.net/glew.txt"
+                font_size: 12
+                size_hint_y: None
+                height: self.minimum_height
+        Button:
+            text: "Close"
+            size_hint_y: None
+            height: self.texture_size[1] * 1.1
+            on_release: root.close()
