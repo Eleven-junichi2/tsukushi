@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import codecs
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -18,7 +19,7 @@ from kivy.clock import Clock
 from pygments import lexers
 
 __file__ = sys.argv[0]
-resource_add_path(Path(__file__).resolve().parent / "resources")
+resource_add_path(str(Path(__file__).resolve().parent / "resources"))
 
 LabelBase.register(DEFAULT_FONT, "fonts/NotoSansCJKjp-Regular.otf")
 LabelBase.register("code_input", "fonts/NotoSansMonoCJKjp-Regular.otf")
@@ -244,10 +245,11 @@ class EditorScreen(Screen):
         popup.open()
 
     def open_file_yield_progress(self, file_path, *args):
+        progress_max = 0
+        progress_count = 0
         try:
             with open(file_path, "r") as f:
                 progress_max = sum(1 for line in open(file_path, "r")) + 1
-                progress_count = 0
                 yield progress_count, progress_max
                 text = ""
                 for line in f:
@@ -266,7 +268,7 @@ class EditorScreen(Screen):
             yield progress_max, progress_max
         except UnicodeDecodeError:
             self.text_input_area.text = (
-                ":( Can't decode the file: {}".format(
+                ":( Unicode decode error: {}".format(
                     Path(file_path).parts[-1]))
             yield progress_max, progress_max
 
@@ -285,7 +287,7 @@ class EditorScreen(Screen):
                     Path(file_path).parts[-1]))
         except UnicodeDecodeError:
             self.text_input_area.text = (
-                ":( Can't decode the file: {}".format(
+                ":( Unicode decode error: {}".format(
                     Path(file_path).parts[-1]))
         else:
             return True
@@ -311,6 +313,7 @@ class EditorScreen(Screen):
         self.gen_to_progress = self.open_file_yield_progress(file_path)
         self.show_progress_schedule = Clock.schedule_interval(
             self.update_progress_popup, 0)
+
 
     def show_open(self):
         open_file_popup = OpenFilePopup(self.open_file_with_progress)
@@ -348,3 +351,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

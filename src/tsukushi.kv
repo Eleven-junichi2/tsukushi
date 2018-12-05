@@ -156,7 +156,7 @@
             path: str(Path().home())
             show_hidden: True
             # on_submit: root.open_file_and_showing_progress()
-            on_submit: root.file_chooser_user.open_file_with_progress(self.selection[0], True)
+            on_submit: root.file_chooser_user.open_file_with_progress(self.selection[0])
         Label:
             text: "Double click to open the file."
             size_hint_y: None
@@ -419,3 +419,4 @@
             size_hint_y: None
             height: self.texture_size[1] * 1.1
             on_release: root.close()
+
