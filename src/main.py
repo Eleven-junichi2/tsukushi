@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -16,6 +17,7 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.clock import Clock
 from pygments import lexers
 
+__file__ = sys.argv[0]
 resource_add_path(Path(__file__).resolve().parent / "resources")
 
 LabelBase.register(DEFAULT_FONT, "fonts/NotoSansCJKjp-Regular.otf")
@@ -194,7 +196,6 @@ class EditorScreen(Screen):
         self.file_path = ""
         self.progress_popup = None
         self.gen_to_progress = None
-        self.progress_update_before_the_next_frame_flag = False
 
     def on_cursor(self, instance, cursor):
         # cursor[0]: current cursor postition(col)
@@ -285,25 +286,27 @@ class EditorScreen(Screen):
         else:
             return True
 
-    def update_progress_popup(self, *args, **kwargs):
+    def update_progress_popup(self, dt):
         try:
             value, max_value = next(self.gen_to_progress)
             self.progress_popup.set_progress_max(max_value)
             self.progress_popup.set_progress_value(value)
-            if self.progress_update_before_the_next_frame_flag:
+            # --- This code For speeding up to opening file.
+            if dt == 0:
                 dt = -1
-                self.progress_update_before_the_next_frame_flag = False
             else:
                 dt = 0
-                self.progress_update_before_the_next_frame_flag = True
+            # ---
             Clock.schedule_once(self.update_progress_popup, dt)
         except StopIteration:
+            Clock.unschedule(self.show_progress_schedule)
             self.progress_popup.dismiss()
 
     def open_file_with_progress(self, *args, **kwargs):
         self.progress_popup = ProgressPopup()
         self.gen_to_progress = self.open_file_yield_progress(*args, **kwargs)
-        Clock.schedule_once(self.update_progress_popup, -1)
+        self.show_progress_schedule = Clock.schedule_interval(
+            self.update_progress_popup, 0)
 
     def show_open(self):
         popup = OpenFilePopup(self.open_file)
