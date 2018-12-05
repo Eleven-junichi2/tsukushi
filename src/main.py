@@ -1,5 +1,4 @@
 from pathlib import Path
-from functools import partial
 import sys
 
 from kivy.app import App
@@ -11,7 +10,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import (
     ObjectProperty, DictProperty, StringProperty,
-    NumericProperty, ReferenceListProperty, BooleanProperty)
+    NumericProperty, ReferenceListProperty)
 from kivy.resources import resource_add_path
 from kivy.extras.highlight import KivyLexer
 from kivy.core.text import LabelBase, DEFAULT_FONT
