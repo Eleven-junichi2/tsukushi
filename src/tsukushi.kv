@@ -5,6 +5,7 @@
 <Popup>:
     size_hint: 0.8, 0.8
     title: "　"
+    separator_height: 0
 
 <TextInput>:
     font_name: "code_input"
@@ -70,6 +71,11 @@
             id: file_chooser
             path: str(Path().home())
             show_hidden: True
+            on_submit:
+                if file_chooser.selection:\
+                root.open_file(file_chooser.selection[0])
+                if file_chooser.selection:\
+                root.close()
         Label:
             text: "Click to select the file."
             size_hint_y: None
@@ -87,10 +93,10 @@
                 text: "Open File"
                 size_hint_x: 0.44
                 on_release:
-                    is_ok = False
                     if file_chooser.selection:\
-                    is_ok = root.open_file(file_chooser.selection[0])
-                    if is_ok: root.close()
+                    root.open_file(file_chooser.selection[0])
+                    if file_chooser.selection:\
+                    root.close()
             Button:
                 text: "Close"
                 size_hint_x: 0.22
@@ -104,6 +110,9 @@
             id: progress_bar
         Label:
             text: "{}/{}".format(progress_bar.value, progress_bar.max)
+
+<ProgressPopup>:
+    size_hint: 0.7, 0.7
 
 <DashBoardFileChooserView>:
     file_chooser: file_chooser

@@ -1,4 +1,5 @@
 from pathlib import Path
+from functools import partial
 import sys
 
 from kivy.app import App
@@ -10,7 +11,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import (
     ObjectProperty, DictProperty, StringProperty,
-    NumericProperty, ReferenceListProperty)
+    NumericProperty, ReferenceListProperty, BooleanProperty)
 from kivy.resources import resource_add_path
 from kivy.extras.highlight import KivyLexer
 from kivy.core.text import LabelBase, DEFAULT_FONT
@@ -69,6 +70,10 @@ class SaveFilePopup(Popup):
 class OpenFilePopupLayout(RelativeLayout):
     close = ObjectProperty(None)
     open_file = ObjectProperty(None)
+
+    def on_close_now(self, instance, close_now):
+        if close_now:
+            instance.close()
 
 
 class OpenFilePopup(Popup):
@@ -302,19 +307,19 @@ class EditorScreen(Screen):
             Clock.unschedule(self.show_progress_schedule)
             self.progress_popup.dismiss()
 
-    def open_file_with_progress(self, *args, **kwargs):
+    def open_file_with_progress(self, file_path):
         self.progress_popup = ProgressPopup()
-        self.gen_to_progress = self.open_file_yield_progress(*args, **kwargs)
+        self.gen_to_progress = self.open_file_yield_progress(file_path)
         self.show_progress_schedule = Clock.schedule_interval(
             self.update_progress_popup, 0)
 
     def show_open(self):
-        popup = OpenFilePopup(self.open_file)
-        popup.open()
+        open_file_popup = OpenFilePopup(self.open_file_with_progress)
+        open_file_popup.open()
 
     def show_license(self):
-        popup = LicensePopup()
-        popup.open()
+        save_file_popup = LicensePopup()
+        save_file_popup.open()
 
 
 class LicenseScreen(Screen):
