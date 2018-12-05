@@ -306,10 +306,14 @@
 <LicensePopupLayout>:
     BoxLayout:
         orientation: "vertical"
+        padding: 4, 4
+        spacing: 2
         BoxLayout:
             orientation: "vertical"
             Label:
                 text: "(C) 2018 Eleven-junichi2"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True
@@ -321,6 +325,8 @@
             orientation: "vertical"
             Label:
                 text: "This app's repository"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True
@@ -331,10 +337,15 @@
         Label:
             text: "The copyright of the following libraries belongs to their respective rights holders:"
             text_size_width: self.texture_size[0]
+            font_size: 16
+            size_hint_y: None
+            height: self.texture_size[1]
         BoxLayout:
             orientation: "vertical"
             Label:
                 text: "Kivy"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True
@@ -346,6 +357,8 @@
             orientation: "vertical"
             Label:
                 text: "Noto"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True
@@ -357,6 +370,8 @@
             orientation: "vertical"
             Label:
                 text: "Pygments"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True
@@ -368,6 +383,8 @@
             orientation: "vertical"
             Label:
                 text: "SDL"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True
@@ -379,6 +396,8 @@
             orientation: "vertical"
             Label:
                 text: "GLEW"
+                size_hint_y: None
+                height: self.texture_size[1]
             TextInput:
                 multiline: False
                 readonly: True

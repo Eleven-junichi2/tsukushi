@@ -16,7 +16,7 @@ from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.clock import Clock
 from pygments import lexers
 
-resource_add_path(Path(__file__).parent / "resources")
+resource_add_path(Path(__file__).resolve().parent / "resources")
 
 LabelBase.register(DEFAULT_FONT, "fonts/NotoSansCJKjp-Regular.otf")
 LabelBase.register("code_input", "fonts/NotoSansMonoCJKjp-Regular.otf")
@@ -172,6 +172,7 @@ class EditorScreen(Screen):
     dashboard = ObjectProperty(None)
     toggle_btn_file_chooser = ObjectProperty(None)
     lexer_dict = DictProperty({
+        "Plain text": lexers.get_lexer_by_name("text"),
         "C": lexers.CLexer(),
         "C++": lexers.CppLexer(),
         "CSS": lexers.CssLexer(),
@@ -237,7 +238,7 @@ class EditorScreen(Screen):
         popup = SaveFilePopup(self.save_file, close)
         popup.open()
 
-    def open_file_yield_progress(self, file_path):
+    def open_file_yield_progress(self, file_path, *args):
         try:
             with open(file_path, "r") as f:
                 progress_max = sum(1 for line in open(file_path, "r")) + 1
