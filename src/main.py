@@ -1,6 +1,5 @@
 from pathlib import Path
 import sys
-import codecs
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -19,7 +18,8 @@ from kivy.clock import Clock
 from pygments import lexers
 
 __file__ = sys.argv[0]
-resource_add_path(str(Path(__file__).resolve().parent / "resources"))
+print(__file__)
+resource_add_path(str(Path(__file__).parent / "resources"))
 
 LabelBase.register(DEFAULT_FONT, "fonts/NotoSansCJKjp-Regular.otf")
 LabelBase.register("code_input", "fonts/NotoSansMonoCJKjp-Regular.otf")
