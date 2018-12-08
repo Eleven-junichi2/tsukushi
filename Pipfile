@@ -12,6 +12,5 @@ pyinstaller = "*"
 cython = "*"
 kivy = "*"
 pygments = "*"
-
-[requires]
-python_version = "3.6"
+pip = "==18.0"
+pygame = "*"
