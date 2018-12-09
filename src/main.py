@@ -90,8 +90,36 @@ class OpenFilePopup(Popup):
         self.content.close = close
 
 
+LICENSE_SHOWING = """
+(C) 2018 Eleven-junichi2:
+https://eleven-junichi2.github.io/
+
+This app's repository
+https://github.com/Eleven-junichi2/tsukushi
+
+The copyright of the following libraries and resources belongs to their
+respective rights holders:
+
+Kivy:
+https://github.com/kivy/kivy/blob/master/LICENSE
+
+Noto:
+https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
+
+Pygments:
+https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE
+
+SDL:
+https://www.libsdl.org/license.php
+
+GLEW:
+http://glew.sourceforge.net/glew.txt
+"""
+
+
 class LicensePopupLayout(RelativeLayout):
     close = ObjectProperty(None)
+    license_showing = StringProperty(LICENSE_SHOWING)
 
 
 class LicensePopup(Popup):
@@ -314,7 +342,6 @@ class EditorScreen(Screen):
         self.show_progress_schedule = Clock.schedule_interval(
             self.update_progress_popup, 0)
 
-
     def show_open(self):
         open_file_popup = OpenFilePopup(self.open_file_with_progress)
         open_file_popup.open()
@@ -351,4 +378,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

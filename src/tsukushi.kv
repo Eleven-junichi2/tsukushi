@@ -319,101 +319,104 @@
         spacing: 2
         BoxLayout:
             orientation: "vertical"
-            Label:
-                text: "(C) 2018 Eleven-junichi2"
-                size_hint_y: None
-                height: self.texture_size[1]
             TextInput:
-                multiline: False
-                readonly: True
-                text: "https://eleven-junichi2.github.io/"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                text: "This app's repository"
-                size_hint_y: None
-                height: self.texture_size[1]
-            TextInput:
-                multiline: False
-                readonly: True
-                text: "https://github.com/Eleven-junichi2/makodedit"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
-        Label:
-            text: "The copyright of the following libraries belongs to their respective rights holders:"
-            text_size_width: self.texture_size[0]
-            font_size: 16
-            size_hint_y: None
-            height: self.texture_size[1]
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                text: "Kivy"
-                size_hint_y: None
-                height: self.texture_size[1]
-            TextInput:
-                multiline: False
-                readonly: True
-                text: "https://github.com/kivy/kivy/blob/master/LICENSE"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                text: "Noto"
-                size_hint_y: None
-                height: self.texture_size[1]
-            TextInput:
-                multiline: False
-                readonly: True
-                text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                text: "Pygments"
-                size_hint_y: None
-                height: self.texture_size[1]
-            TextInput:
-                multiline: False
-                readonly: True
-                text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                text: "SDL"
-                size_hint_y: None
-                height: self.texture_size[1]
-            TextInput:
-                multiline: False
-                readonly: True
-                text: "https://www.libsdl.org/license.php"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
-        BoxLayout:
-            orientation: "vertical"
-            Label:
-                text: "GLEW"
-                size_hint_y: None
-                height: self.texture_size[1]
-            TextInput:
-                multiline: False
-                readonly: True
-                text: "http://glew.sourceforge.net/glew.txt"
-                font_size: 12
-                size_hint_y: None
-                height: self.minimum_height
+                text: root.license_showing
+        #     Label:
+        #         text: "(C) 2018 Eleven-junichi2"
+        #         text_size: self.size
+        #         halign: "center"
+        #         valign: "center"
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "https://eleven-junichi2.github.io/"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
+        # BoxLayout:
+        #     orientation: "vertical"
+        #     Label:
+        #         text: "This app's repository"
+        #         text_size: self.size
+        #         halign: "center"
+        #         valign: "center"
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "https://github.com/Eleven-junichi2/makodedit"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
+        # Label:
+        #     text: "The copyright of the following libraries belongs to their respective rights holders:"
+        #     text_size: self.size
+        #     halign: "center"
+        #     valign: "center"
+        # BoxLayout:
+        #     orientation: "vertical"
+        #     Label:
+        #         text: "Kivy"
+        #         size_hint_y: None
+        #         height: self.texture_size[1]
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "https://github.com/kivy/kivy/blob/master/LICENSE"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
+        # BoxLayout:
+        #     orientation: "vertical"
+        #     Label:
+        #         text: "Noto"
+        #         size_hint_y: None
+        #         height: self.texture_size[1]
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
+        # BoxLayout:
+        #     orientation: "vertical"
+        #     Label:
+        #         text: "Pygments"
+        #         size_hint_y: None
+        #         height: self.texture_size[1]
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
+        # BoxLayout:
+        #     orientation: "vertical"
+        #     Label:
+        #         text: "SDL"
+        #         size_hint_y: None
+        #         height: self.texture_size[1]
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "https://www.libsdl.org/license.php"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
+        # BoxLayout:
+        #     orientation: "vertical"
+        #     Label:
+        #         text: "GLEW"
+        #         size_hint_y: None
+        #         height: self.texture_size[1]
+        #     TextInput:
+        #         multiline: False
+        #         readonly: True
+        #         text: "http://glew.sourceforge.net/glew.txt"
+        #         font_size: 12
+        #         size_hint_y: None
+        #         height: self.minimum_height
         Button:
             text: "Close"
             size_hint_y: None
