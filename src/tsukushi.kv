@@ -117,8 +117,30 @@
 <DashBoardFileChooserView>:
     file_chooser: file_chooser
     file_name_input: file_name_input
+    cwd_path_input: cwd_path_input
     BoxLayout:
         orientation: "vertical"
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 4, 4
+            spacing: 4
+            size_hint_y: None
+            height: 40
+            TextInput:
+                # cwd means current working directory.
+                id: cwd_path_input
+                font_size: 12
+                text: file_chooser.path
+                size_hint_y: None
+                height: self.minimum_height
+                multiline: False
+                on_text_validate: root.set_cwd_path(self.text)
+            IconButton:
+                icon: "images/arrow_icon.png"
+                padding: 8, 5 ,8, 5
+                size_hint_x: None
+                width: self.height
+                on_release: root.set_cwd_path(cwd_path_input.text)
         BoxLayout:
             orientation: "horizontal"
             padding: 4, 4
@@ -223,6 +245,7 @@
                 size_hint_x: None
                 width: 40
                 padding: 4, 4
+                spacing: 4
                 IconToggleButton:
                     id: toggle_btn_file_chooser
                     icon: "images/files_icon.png"
@@ -230,6 +253,13 @@
                     size_hint_y: None
                     height: self.width
                     on_state: root.toggle_file_chooser_show()
+                IconButton:
+                    id: toggle_btn_setting_screen
+                    icon: "images/setting_icon.png"
+                    padding: 4, 4 ,4, 4
+                    size_hint_y: None
+                    height: self.width
+                    on_release: app.open_settings()
             RelativeLayout:
                 id: dashboard
                 size_hint_x: None
@@ -282,21 +312,6 @@
                     text: ""
                     size_hint_y: None
                     height: self.texture_size[1]
-            # BoxLayout:
-            #     orientation: "horizontal"
-            #     size_hint_y: None
-            #     height: self.minimum_height
-            #     spacing: 2
-            #     padding: 2, 2
-            #     Label:
-            #         text: "row_max_num:"
-            #         size_hint_y: None
-            #         height: self.texture_size[1]
-            #     Label:
-            #         id: row_max_num
-            #         text: str(text_input_area.height // text_input_area.line_height)
-            #         size_hint_y: None
-            #         height: self.texture_size[1]
             BoxLayout:
                 orientation: "horizontal"
                 size_hint_y: None
@@ -321,102 +336,6 @@
             orientation: "vertical"
             TextInput:
                 text: root.license_showing
-        #     Label:
-        #         text: "(C) 2018 Eleven-junichi2"
-        #         text_size: self.size
-        #         halign: "center"
-        #         valign: "center"
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "https://eleven-junichi2.github.io/"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
-        # BoxLayout:
-        #     orientation: "vertical"
-        #     Label:
-        #         text: "This app's repository"
-        #         text_size: self.size
-        #         halign: "center"
-        #         valign: "center"
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "https://github.com/Eleven-junichi2/makodedit"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
-        # Label:
-        #     text: "The copyright of the following libraries belongs to their respective rights holders:"
-        #     text_size: self.size
-        #     halign: "center"
-        #     valign: "center"
-        # BoxLayout:
-        #     orientation: "vertical"
-        #     Label:
-        #         text: "Kivy"
-        #         size_hint_y: None
-        #         height: self.texture_size[1]
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "https://github.com/kivy/kivy/blob/master/LICENSE"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
-        # BoxLayout:
-        #     orientation: "vertical"
-        #     Label:
-        #         text: "Noto"
-        #         size_hint_y: None
-        #         height: self.texture_size[1]
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
-        # BoxLayout:
-        #     orientation: "vertical"
-        #     Label:
-        #         text: "Pygments"
-        #         size_hint_y: None
-        #         height: self.texture_size[1]
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
-        # BoxLayout:
-        #     orientation: "vertical"
-        #     Label:
-        #         text: "SDL"
-        #         size_hint_y: None
-        #         height: self.texture_size[1]
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "https://www.libsdl.org/license.php"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
-        # BoxLayout:
-        #     orientation: "vertical"
-        #     Label:
-        #         text: "GLEW"
-        #         size_hint_y: None
-        #         height: self.texture_size[1]
-        #     TextInput:
-        #         multiline: False
-        #         readonly: True
-        #         text: "http://glew.sourceforge.net/glew.txt"
-        #         font_size: 12
-        #         size_hint_y: None
-        #         height: self.minimum_height
         Button:
             text: "Close"
             size_hint_y: None

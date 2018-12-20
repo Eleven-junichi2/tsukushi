@@ -11,14 +11,14 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import (
     ObjectProperty, DictProperty, StringProperty,
     NumericProperty, ReferenceListProperty)
-from kivy.resources import resource_add_path
+from kivy.resources import resource_add_path, resource_find
 from kivy.extras.highlight import KivyLexer
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.clock import Clock
+from kivy.config import ConfigParser
 from pygments import lexers
 
 __file__ = sys.argv[0]
-print(__file__)
 resource_add_path(str(Path(__file__).parent / "resources"))
 
 LabelBase.register(DEFAULT_FONT, "fonts/NotoSansCJKjp-Regular.otf")
@@ -164,10 +164,16 @@ class DashBoardFileChooserView(RelativeLayout):
     file_chooser = ObjectProperty(None)
     file_chooser_user = ObjectProperty(None)
     file_name_input = ObjectProperty(None)
+    cwd_path_input = ObjectProperty(None)
 
     def __init__(self, file_chooser_user, **kwargs):
         super().__init__(**kwargs)
         self.file_chooser_user = file_chooser_user
+
+    def set_cwd_path(self, text):
+        if Path(text).is_dir():
+            self.file_chooser.path = text
+        self.cwd_path_input.text = self.file_chooser.path
 
     def add_file(self, file_location, file_name):
         if not file_name:
@@ -364,6 +370,12 @@ class TsukushiApp(App):
         super().__init__(**kwargs)
         self.icon = "images/icon.png"
         self.title = "Tsukushi"
+
+    def build_config(self, config):
+        config.read(resource_find("config.ini"))
+
+    def build_settings(self, settings):
+        settings.add_json_panel("App settings", self.config, filename=resource_find("settings.json"))
 
     def build(self):
         root_widget = TsukushiScreenManager()
