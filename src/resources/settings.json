@@ -1,20 +1,13 @@
-// [
-//     {
-//         "type": "title",
-//         "title": "Font"
-//     },
-//     {
-//         "type": "bool",
-//         "title": "Use default font",
-//         "desc": "Toggle using default font",
-//         "section": "font",
-//         "key": "use_default"
-//     },
-//     {
-//         "type": "path",
-//         "title": "path",
-//         "desc": "Set path to font file",
-//         "section": "font",
-//         "key": "path"
-//     }
-// ]
+[
+    {
+        "type": "title",
+        "title": "Settings of the app"
+    },
+    {
+        "type": "string",
+        "title": "external command",
+        "desc": "Set external command. It's can execute with pressing 'Execute command' button",
+        "section": "external_command",
+        "key": "command_string"
+    }
+]

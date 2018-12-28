@@ -61,23 +61,26 @@ class ClosablePopup(Popup):
                 self.close_function()
 
 
+class MsgPopupLayout(RelativeLayout):
+    close = ObjectProperty(None)
+    msg_label = ObjectProperty(None)
+
+
+class MsgPopup(ClosablePopup):
+    def __init__(self, msg_text, close_function=None, **kwargs):
+        super().__init__(MsgPopupLayout(), **kwargs)
+        self.content.msg_label.text = msg_text
+
+
 class SaveFilePopupLayout(RelativeLayout):
     close = ObjectProperty(None)
     save_file = ObjectProperty(None)
 
 
-class SaveFilePopup(Popup):
+class SaveFilePopup(ClosablePopup):
     def __init__(self, save_function, close_function=None, **kwargs):
-        super().__init__(**kwargs)
-        self.content = SaveFilePopupLayout()
-        self.content.close = self.dismiss
+        super().__init__(SaveFilePopupLayout(), **kwargs)
         self.content.save_file = save_function
-        self.close_function = close_function
-
-        def close():
-            self.dismiss()
-            if self.close_function:
-                self.close_function()
 
 
 class OpenFilePopupLayout(RelativeLayout):
@@ -249,19 +252,11 @@ class EditorScreen(Screen):
         self.progress_popup = None
         self.gen_to_progress = None
 
-    def launch_external_terminal(self):
-        from kivy.uix.label import Label
-        LAUNCH_SUCESS = 0
-        if True:
-            popup = Popup(title="Required",
-                          content=Label(text="You have not set an external program. See the setting."))
-            popup.open()
-
     def on_cursor(self, instance, cursor):
         # cursor[0]: current cursor postition(col)
         # cursor[1]: current cursor postition(row)
         self.col_num.text = str(cursor[0])
-        self.row_num.text = str(cursor[1])
+        self.row_num.text = str(cursor[1] + 1)
 
     def on_lang_mode_chooser(self, instance, text):
         self.set_syntax_highlight(text)
@@ -392,17 +387,31 @@ class TsukushiApp(App):
         self.icon = "images/icon.png"
         self.title = "Tsukushi"
 
-    # def build_config(self, config):
-    #     config.read(resource_find("config.ini"))
+    def build_config(self, config):
+        config.read(resource_find("config.ini"))
 
-    # def build_settings(self, settings):
-    #     settings.add_json_panel("App settings", self.config, filename=resource_find("settings.json"))
+    def build_settings(self, settings):
+        settings.add_json_panel(
+            "App settings", self.config, filename=resource_find("settings.json"))
 
     def build(self):
         root_widget = TsukushiScreenManager()
         root_widget.add_widget(EditorScreen(name="editor"))
         root_widget.add_widget(LicenseScreen(name="license"))
         return root_widget
+
+    def execute_external_command(self):
+        from kivy.uix.label import Label
+        command_string = App.get_running_app().config.get(
+            "external_command", "command_string")
+        SUCESS = 0
+        if not command_string:
+            popup = MsgPopup("You have not set command. See the setting.")
+            popup.open()
+        else:
+            if not os.system(command_string) == SUCESS:
+                popup = MsgPopup("Couldn't execute. It is necessary to redo the setting.")
+                popup.open()
 
 
 def main():

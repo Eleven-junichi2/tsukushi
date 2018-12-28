@@ -31,6 +31,18 @@
                 pos: self.x + root.padding_left, self.y + root.padding_bottom
                 size:
                     self.width - root.padding_right * 2, self.height - root.padding_top * 2
+
+<MsgPopupLayout>:
+    msg_label: msg_label
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            id: msg_label
+        Button:
+            text: "Close"
+            size_hint_y: 0.22
+            on_release: root.close()
+
 <SaveFilePopupLayout>:
     BoxLayout:
         orientation: "vertical"
@@ -278,10 +290,10 @@
                 CodeInput:
                     id: text_input_area
                 Button:
-                    text: "Launch external terminal"
+                    text: 'Execute command "{}"'.format(app.config.get("external_command", "command_string"))
                     size_hint_y: None
                     height: self.texture_size[1] * 1.2
-                    on_release: root.launch_external_terminal()
+                    on_release: app.execute_external_command()
         BoxLayout:
             orientation: "horizontal"
             id: edit_info
