@@ -277,6 +277,11 @@
                     multiline: False
                 CodeInput:
                     id: text_input_area
+                Button:
+                    text: "Launch external terminal"
+                    size_hint_y: None
+                    height: self.texture_size[1] * 1.2
+                    on_release: root.launch_external_terminal()
         BoxLayout:
             orientation: "horizontal"
             id: edit_info

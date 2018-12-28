@@ -1,20 +1,20 @@
-[
-    {
-        "type": "title",
-        "title": "Font"
-    },
-    {
-        "type": "bool",
-        "title": "Use default font",
-        "desc": "Toggle using default font",
-        "section": "font",
-        "key": "use_default"
-    },
-    {
-        "type": "path",
-        "title": "path",
-        "desc": "Set path to font file",
-        "section": "font",
-        "key": "path"
-    }
-]
+// [
+//     {
+//         "type": "title",
+//         "title": "Font"
+//     },
+//     {
+//         "type": "bool",
+//         "title": "Use default font",
+//         "desc": "Toggle using default font",
+//         "section": "font",
+//         "key": "use_default"
+//     },
+//     {
+//         "type": "path",
+//         "title": "path",
+//         "desc": "Set path to font file",
+//         "section": "font",
+//         "key": "path"
+//     }
+// ]

@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import os
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -47,6 +48,19 @@ class IconToggleButton(IconBase, ToggleButton):
     pass
 
 
+class ClosablePopup(Popup):
+    def __init__(self, content, close_function=None, **kwargs):
+        super().__init__(**kwargs)
+        self.content = content
+        self.content.close = self.dismiss
+        self.close_function = close_function
+
+        def close():
+            self.dismiss()
+            if self.close_function:
+                self.close_function()
+
+
 class SaveFilePopupLayout(RelativeLayout):
     close = ObjectProperty(None)
     save_file = ObjectProperty(None)
@@ -64,7 +78,6 @@ class SaveFilePopup(Popup):
             self.dismiss()
             if self.close_function:
                 self.close_function()
-        self.content.close = close
 
 
 class OpenFilePopupLayout(RelativeLayout):
@@ -236,6 +249,14 @@ class EditorScreen(Screen):
         self.progress_popup = None
         self.gen_to_progress = None
 
+    def launch_external_terminal(self):
+        from kivy.uix.label import Label
+        LAUNCH_SUCESS = 0
+        if True:
+            popup = Popup(title="Required",
+                          content=Label(text="You have not set an external program. See the setting."))
+            popup.open()
+
     def on_cursor(self, instance, cursor):
         # cursor[0]: current cursor postition(col)
         # cursor[1]: current cursor postition(row)
@@ -371,11 +392,11 @@ class TsukushiApp(App):
         self.icon = "images/icon.png"
         self.title = "Tsukushi"
 
-    def build_config(self, config):
-        config.read(resource_find("config.ini"))
+    # def build_config(self, config):
+    #     config.read(resource_find("config.ini"))
 
-    def build_settings(self, settings):
-        settings.add_json_panel("App settings", self.config, filename=resource_find("settings.json"))
+    # def build_settings(self, settings):
+    #     settings.add_json_panel("App settings", self.config, filename=resource_find("settings.json"))
 
     def build(self):
         root_widget = TsukushiScreenManager()
