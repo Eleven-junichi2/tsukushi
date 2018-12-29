@@ -5,9 +5,18 @@
     },
     {
         "type": "string",
-        "title": "external command",
+        "title": "External command",
         "desc": "Set external command. It's can execute with pressing 'Execute command' button",
         "section": "external_command",
         "key": "command_string"
+    },
+    {
+        "type": "path",
+        "title": "Execution location",
+        "desc": "The command execution location",
+        "section": "external_command",
+        "key": "execution_location",
+        "dirselect": true,
+        "show_hidden": true
     }
 ]

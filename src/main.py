@@ -404,13 +404,17 @@ class TsukushiApp(App):
         from kivy.uix.label import Label
         command_string = App.get_running_app().config.get(
             "external_command", "command_string")
+        execution_location = App.get_running_app().config.get(
+            "external_command", "execution_location")
         SUCESS = 0
         if not command_string:
             popup = MsgPopup("You have not set command. See the setting.")
             popup.open()
         else:
+            os.chdir(execution_location)
             if not os.system(command_string) == SUCESS:
-                popup = MsgPopup("Couldn't execute. It is necessary to redo the setting.")
+                popup = MsgPopup(
+                    "Couldn't execute. It is necessary to redo the setting.")
                 popup.open()
 
 
