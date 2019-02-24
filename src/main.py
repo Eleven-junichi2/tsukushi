@@ -218,6 +218,11 @@ class DashBoardFileChooserView(RelativeLayout):
                 return False
         else:
             return False
+    
+    def remove_file(self, file_path):
+        if file_path.is_file():
+            Path(file_path).unlink()
+            self.file_chooser._update_files()
 
 
 class EditorScreen(Screen):

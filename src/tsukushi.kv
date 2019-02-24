@@ -191,6 +191,21 @@
             show_hidden: True
             # on_submit: root.open_file_and_showing_progress()
             on_submit: root.file_chooser_user.open_file_with_progress(self.selection[0])
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 4, 4
+            spacing: 4
+            size_hint_y: None
+            height: 40
+            IconButton:
+                id: add_dir_button
+                icon: "images/remove_icon.png"
+                padding: 5, 4 ,5, 4
+                size_hint_x: None
+                width: self.height
+                on_release:
+                    if root.file_chooser.selection:\
+                    root.remove_file(root.file_chooser.selection[0]) 
         Label:
             text: "Double click to open the file."
             size_hint_y: None
